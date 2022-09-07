@@ -1,2 +1,4 @@
-# staging-weekly-challenge-09072022
-Largest gap in an array
+# Staging Weekly Challenge - Sep 07, 2022
+**Features**
+* Largest gap in an array
+* Max Sum Subarray
