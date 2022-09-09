@@ -4,8 +4,6 @@ import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-
-
 public class WeeklyChallenge {
     /**
      * Largest gap in an array:
@@ -28,8 +26,8 @@ public class WeeklyChallenge {
      * @return int
      */
     public static int FindMaxSumArray (int[] arr) {
-        // Check to see if arr is empty to null, if so return 0;
-        if (arr.length == 0 || arr == null) return 0;
+        // Check to see if arr is empty or null, if so return 0;
+        if (arr == null || arr.length == 0) return 0;
         return FindMaxSumArray(arr, 0, arr.length - 1);
     }
 
@@ -41,43 +39,25 @@ public class WeeklyChallenge {
         int mid = (left + right) / 2;
 
         // Left Subarray, mid inclusive
-        int leftMaxSoFar = arr[left];
-        int leftMaxEndingHere = arr[left];
-
-        // Use Kadane algorithm for left subarray
-        for (int i = left + 1; i <= mid; i++) {
-            if (arr[i] > leftMaxEndingHere + arr[i]) {
-                leftMaxEndingHere = arr[i];
-            } else {
-                leftMaxEndingHere = leftMaxEndingHere + arr[i];
-            }
-    
-            if (leftMaxSoFar < leftMaxEndingHere) {
-                leftMaxSoFar = leftMaxEndingHere;
-            }
+        int leftMax = arr[mid];
+        int sum = 0;
+        for (int i = mid; i >= left; i--) {
+            sum += arr[i];
+            if (sum > leftMax) leftMax = sum;
         }
 
         // Right Subarray, mid exclusive
-        int rightMaxSoFar = arr[right];
-        int rightMaxEndingHere = arr[right];
-
-        // Use Kadane algorithm for right subarray
-        for (int i = left + 1; i <= mid; i++) {
-            if (arr[i] > rightMaxEndingHere + arr[i]) {
-                rightMaxEndingHere = arr[i];
-            } else {
-                rightMaxEndingHere = rightMaxEndingHere + arr[i];
-            }
-    
-            if (rightMaxSoFar < rightMaxEndingHere) {
-                rightMaxSoFar = rightMaxEndingHere;
-            }
+        int rightMax = arr[mid+1];
+        sum = 0;    // reset sum to 0
+        for (int i = mid + 1; i <= right; i++) {
+            sum += arr[i];
+            if (sum > rightMax) rightMax = sum;
         }
 
         // Choose 
         return Math.max(
-            FindMaxSumArray(arr, left, mid),
-            FindMaxSumArray(arr, mid + 1, right)
+            leftMax + rightMax,
+            Integer.max(FindMaxSumArray(arr, left, mid), FindMaxSumArray(arr, mid + 1, right))
         );
     }
 }
